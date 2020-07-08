@@ -1,0 +1,17 @@
+* Danmu 
+
+** Usage
+
+** Installation
+
+** Author
+
++ Lingao Jin (jinlingao@outlook.com)
+
+** Copyright
+
+Copyright (c) 2020 Lingao Jin (jinlingao@outlook.com)
+
+** License
+
+Licensed under the MIT License.
