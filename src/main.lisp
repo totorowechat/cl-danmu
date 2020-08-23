@@ -77,7 +77,7 @@
 ;;
 ;; danmu
 
-(defun header-encode (msg)
-  (let ((data-len (+ 9 (length msg)))
-	(msg-byte (trivial-utf-8:string-to-utf-8-bytes msg))
-	(len-byte (
+;; (defun header-encode (msg)
+;;   (let ((data-len (+ 9 (length msg)))
+;; 	(msg-byte (trivial-utf-8:string-to-utf-8-bytes msg))
+;; 	(len-byte (

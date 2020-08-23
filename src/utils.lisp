@@ -14,6 +14,7 @@
                               (ironclad:ascii-string-to-byte-array str))))
 
 (defun group (source n)
+  "(group '(1 2 3 4 5 6 7) 3) -> '((1 2 3) (4 5 6) (7))"
   (if (zerop n) (error "zero length"))
   (labels ((rec (source acc)
 	     (let ((rest (nthcdr n source)))

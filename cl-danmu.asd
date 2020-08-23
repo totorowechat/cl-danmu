@@ -6,13 +6,17 @@
                "cl-ppcre"
                "cl-json"
 	       "cl-arrows"
+	       "cl-intbytes"
 	       "trivial-utf-8"
-	       "ironclad")
+	       "ironclad"
+	       "websocket-driver-client")
   :components ((:module "src"
                 :serial t
                 :components
                 ((:file "utils")
-                 (:file "stt")
+		 (:file "stt")
+		 (:file "msg")
+		 (:file "web-socket")
 		 (:file "main"))))
   :description ""
   :in-order-to ((test-op (test-op "cl-danmu/tests"))))
@@ -23,7 +27,9 @@
   :depends-on ("cl-danmu"
                "rove")
   :components ((:module "tests"
+		:serial t
                 :components
-                ((:file "main"))))
+                ((:file "stt")
+		 (:file "main"))))
   :description "Test system for danmu"
   :perform (test-op (op c) (symbol-call :rove :run c)))
