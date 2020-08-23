@@ -1,7 +1,11 @@
 (defpackage danmu/stt
   (:use :cl :cl-ppcre)
-  (:import-from :cl-arrows
-		:->>)
+  (:import-from
+   :cl-arrows
+   :->>)
+  (:import-from
+   :danmu/utils
+   :mkstr)
   (:export :serialize :deserialize))
 
 (in-package :danmu/stt)
@@ -16,10 +20,12 @@
 ;; (join "@=:" '("This" "is" "it"))
 
 (defun serialize (l)
-  (->>
-   l
-   (map 'list #'(lambda (x) (funcall #'join "@=" x)))
-   (join #\/)))
+  (mkstr
+   (->>
+    l
+    (map 'list #'(lambda (x) (funcall #'join "@=" x)))
+    (join #\/))
+   "/"))
 
 (defun deserialize (s)
   "s -> input string "
@@ -35,3 +41,4 @@
 
 ;; (string-trim "type" *s*)
 ;; (deserialize *s*)
+;; (serialize '(("type" "loginreq")( "roomid" "52004")))

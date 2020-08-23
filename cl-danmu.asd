@@ -2,7 +2,8 @@
   :version "0.1.0"
   :author "Lingao Jin"
   :license "MIT"
-  :depends-on ("drakma"
+  :depends-on ("bt-semaphore" ;; todo replace with Bordeaux-Threads
+	       "drakma"
                "cl-ppcre"
                "cl-json"
 	       "cl-arrows"
