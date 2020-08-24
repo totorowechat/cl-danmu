@@ -7,7 +7,11 @@
    :bt-semaphore)
   (:import-from
    :danmu/stt
-   :serialize)
+   :serialize
+   :deserialize)
+  (:import-from
+   :danmu/utils
+   :mkstr)
   (:export
    :ws-client
    :new))
@@ -31,12 +35,23 @@
 (defun read-msg (bytes start length)
   (trivial-utf-8:utf-8-bytes-to-string bytes :start start :end (- (+ start length) 9)))
 
+;; (defun read-dy-bytes (bytes)
+;;   (if (= 0 (length bytes))
+;;       nil
+;;       (progn
+;; 	(analysis-msg  (read-msg bytes 12 (read-bytes-len bytes 0)))
+;; 	(read-dy-bytes (subseq bytes (+ 4 (read-bytes-len bytes 0)))))))
+
 (defun read-dy-bytes (bytes)
-  (if (= 0 (length bytes))
-      nil
-      (progn
-	(print (read-msg bytes 12 (read-bytes-len bytes 0)))
-	(read-dy-bytes (subseq bytes (+ 4 (read-bytes-len bytes 0)))))))
+  (labels ((helper (bytes lst)
+	     (if (= 0 (length bytes))
+		 lst
+		 (progn
+		   ;; here print the msg
+		   (analysis-msg  (read-msg bytes 12 (read-bytes-len bytes 0)))
+		   (helper (subseq bytes (+ 4 (read-bytes-len bytes 0)))
+			   (list lst(read-msg bytes 12 (read-bytes-len bytes 0))))))))
+    (helper bytes '())))
 
 ;; (defmethod new ((wsc ws-client))
 ;;   (wsd:start-connection (client wsc))
@@ -95,15 +110,54 @@
 		    (serialize (list (list "type" "mrkl"))))))
 
 (defun dy-heartbeat (wsc)
+  "this function will never stop, so be careful when create multiple ws-client!"
   (bt:make-thread (lambda ()
 		    (progn
 		      (loop
 			(sleep 45)
-			(send-heartbeat wsc)))) nil))
+			(send-heartbeat wsc))))
 		  :name "dy-heartbeat"))
 
+;; (defun msg-chatmsg (message)
+;;   (mapcar (lambda (x) (cadr x))
+;; 	  (remove-if-not (lambda (x)
+;; 			   (or (string= "txt" (car x))
+;; 			       (string= "nn" (car x))
+;; 			       (string= "level" (car x))))
+;; 			 (deserialize message))))
+
+(defun msg-chatmsg (message)
+  (let ((name nil)
+	(level nil)
+	(txt nil))
+    (mapc (lambda (x)
+	    (cond ((string= "txt" (car x))
+		   (progn
+		     (setf txt (cadr x))
+		     t))
+		  ((string= "nn" (car x))
+		   (progn
+		     (setf name (cadr x))
+		     t))
+		  ((string= "level" (car x))
+		   (progn
+		     (setf level (cadr x))
+		     t))
+		  (t nil)))
+	  (deserialize message))
+    (list txt name level)))
+
+(defun analysis-msg (message)
+  (let ((msg-type (cadar (deserialize message))))
+    (cond ((string= "chatmsg" msg-type)
+	   (print (msg-chatmsg message)))
+	  )))
+	  
 (defmethod new ((wsc ws-client))
   (wsd:start-connection (client wsc))
+  ;; (wsd:on :message (client wsc)
+  ;; 	  (lambda (message)
+  ;; 	    (read-dy-bytes message)))
   (wsd:on :message (client wsc)
 	  (lambda (message)
 	    (read-dy-bytes message)))

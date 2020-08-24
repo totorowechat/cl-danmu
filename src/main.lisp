@@ -2,7 +2,13 @@
   (:use :cl)
   (:import-from :cl-arrows :->> :-<>>)
   (:import-from :danmu/utils :mkstr)
-  (:export :main))
+  (:import-from
+   :danmu/web-socket
+   :new
+   :ws-client)
+  (:export
+   :main
+   :run))
 (in-package :danmu)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -72,6 +78,9 @@
 	 (rlst (->> (get-roomlist p)
 		    (mapcar #'mkstr))))
     (pairlis (mapcar #'get-streamer rlst) (mapcar #'build-url rlst))))
+
+(defun run (roomid)
+  (new (make-instance 'ws-client :roomid roomid)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

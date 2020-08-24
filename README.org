@@ -1,8 +1,35 @@
+#+TITLE: README
+#+AUTHOR: Lingao Jin
+#+EMAIL: jinlingao@outlook.com
+#+LANGUAGE:  en
+
 * Danmu 
+
+At least it can run.
+
+** Todo
+
+- Refactor three functions below.
+- todo replace with Bordeaux-Threads
+- write unit test
 
 ** Usage
 
+#+BEGIN_SRC lisp
+;; run
+(danmu:run 52004) ;; connect to 52004.
+
+#+END_SRC
+
+This program will never stop unless =(quit)=.
+ 
 ** Installation
+
+place this project under ~/common-lisp directory.
+
+#+BEGIN_SRC lisp
+(ql:quickload :cl-danmu)
+#+END_SRC
 
 ** Author
 
@@ -14,4 +41,4 @@ Copyright (c) 2020 Lingao Jin (jinlingao@outlook.com)
 
 ** License
 
-Licensed under the GPL-2.0 License.
+Licensed under the MIT License.

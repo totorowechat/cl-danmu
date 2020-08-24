@@ -30,7 +30,7 @@
 	(print (read-msg bytes 12 (read-bytes-len bytes 0)))
 	(read-dy-bytes (subseq bytes (+ 4 (read-bytes-len bytes 0)))))))
 
-(read-dy-bytes *b*)
+;; (read-dy-bytes *b*)
 
 (defun read-bytes-len (bytes start)
   (if (equalp (subseq bytes start (+ 4 start))
