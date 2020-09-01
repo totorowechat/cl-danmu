@@ -19,8 +19,35 @@ At least it can run.
 ;; run
 (danmu:run 52004) ;; connect to 52004.
 
+;; main
+
+(danmu:main)
+
 #+END_SRC
 
+douyu.json file
+
+#+BEGIN_SRC json
+{
+    "douyu":[
+	52004,
+	3484,
+	48699,
+	220185,
+	142488,
+	208114
+    ],
+    "index": 1,
+    "streamer":{
+	"52004": "菠萝赛东",
+	"3484": "scboy",
+	"142488": "nostalie",
+	"220185": "兮柚",
+	"48699": "衣锦夜行",
+	"208114": "狗贼"
+    }
+}
+#+END_SRC
 This program will never stop unless =(quit)=.
  
 ** Installation
