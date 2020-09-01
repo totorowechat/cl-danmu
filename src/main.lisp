@@ -33,7 +33,7 @@
 (defun get-streamer (rid)
   (cdr (assoc rid
 	      (json:json-bind (streamer)
-			      (json:encode-json-to-string (get-dy-json "~/Documents/douyu.json"))
+			      (json:encode-json-to-string (get-dy-json "./douyu.json"))
 		streamer)
 	      :test #'(lambda (l r) (string= l (mkstr r))))))
 
@@ -74,11 +74,12 @@
 	  (mkstr "http://tx2play1.douyucdn.cn/live/" <> ".flv?uuid="))))
 
 (defun main ()
-  (let* ((p (pathname "~/Documents/douyu.json"))
+  (let* ((p (pathname "./douyu.json"))
 	 (rlst (->> (get-roomlist p)
 		    (mapcar #'mkstr))))
-    (pairlis (mapcar #'get-streamer rlst) (mapcar #'build-url rlst))))
-
+    (print (pairlis (mapcar #'get-streamer rlst) (mapcar #'build-url rlst)))))
+(let ((p (pathname "~/common-lisp/cl-danmu/douyu.json")))
+  (get-roomlist p))
 (defun run (roomid)
   (new (make-instance 'ws-client :roomid roomid)))
 

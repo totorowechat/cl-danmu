@@ -20,6 +20,9 @@
 		 (:file "web-socket")
 		 (:file "main"))))
   :description ""
+  :build-operation "program-op" ;; leave as is
+  :build-pathname "danmu"
+  :entry-point "danmu:main"
   :in-order-to ((test-op (test-op "cl-danmu/tests"))))
 
 (defsystem "cl-danmu/tests"
