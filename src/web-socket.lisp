@@ -154,7 +154,7 @@
 	  )))
 	  
 (defmethod new ((wsc ws-client))
-  (wsd:start-connection (client wsc))
+  (wsd:start-connection (client wsc) :verify nil)
   ;; (wsd:on :message (client wsc)
   ;; 	  (lambda (message)
   ;; 	    (read-dy-bytes message)))

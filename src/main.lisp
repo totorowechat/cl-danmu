@@ -77,7 +77,7 @@
   (let* ((p (pathname "./douyu.json"))
 	 (rlst (->> (get-roomlist p)
 		    (mapcar #'mkstr))))
-    (print (pairlis (mapcar #'get-streamer rlst) (mapcar #'build-url rlst)))))
+    (pairlis (mapcar #'get-streamer rlst) (mapcar #'build-url rlst))))
 (let ((p (pathname "~/common-lisp/cl-danmu/douyu.json")))
   (get-roomlist p))
 (defun run (roomid)
