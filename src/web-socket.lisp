@@ -44,13 +44,16 @@
 
 (defun read-dy-bytes (bytes)
   (labels ((helper (bytes lst)
-	     (if (= 0 (length bytes))
-		 lst
-		 (progn
-		   ;; here print the msg
-		   (analysis-msg  (read-msg bytes 12 (read-bytes-len bytes 0)))
-		   (helper (subseq bytes (+ 4 (read-bytes-len bytes 0)))
-			   (list lst(read-msg bytes 12 (read-bytes-len bytes 0))))))))
+	     (let ((r-bytes-length (read-bytes-len bytes 0)))
+	       (if (= 0 (length bytes))
+		   lst
+		   (progn
+		     ;; here print the msg
+		     (analysis-msg  (read-msg bytes 12 r-bytes-length))
+		     (when (<= (+ 4 r-bytes-length)
+			       (length bytes))
+		       (helper (subseq bytes (+ 4 r-bytes-length) (length bytes))
+			       (list lst (read-msg bytes 12 r-bytes-length)))))))))
     (helper bytes '())))
 
 ;; (defmethod new ((wsc ws-client))
@@ -149,8 +152,7 @@
 
 (defun analysis-msg (message)
   (let ((msg-type (cadar (deserialize message))))
-    (cond ((string= "chatmsg" msg-type)
-	   (print (msg-chatmsg message)))
+    (cond ((string= "chatmsg" msg-type) (print (msg-chatmsg message)))
 	  )))
 	  
 (defmethod new ((wsc ws-client))
