@@ -1,5 +1,5 @@
 (defsystem "cl-danmu"
-  :version "0.1.0"
+  :version "0.1.1"
   :author "Lingao Jin"
   :license "MIT"
   :depends-on ("bt-semaphore" ;; todo replace with Bordeaux-Threads
@@ -31,9 +31,11 @@
   :depends-on ("cl-danmu"
                "rove")
   :components ((:module "tests"
-		:serial t
                 :components
-                ((:file "stt")
+                ((:file "utils")
+		 (:file "stt")
+		 (:file "msg")
+		 (:file "web-socket")
 		 (:file "main"))))
   :description "Test system for danmu"
   :perform (test-op (op c) (symbol-call :rove :run c)))

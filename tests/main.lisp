@@ -1,6 +1,5 @@
 (defpackage danmu/tests/main
   (:use :cl
-        :danmu
         :rove))
 (in-package :danmu/tests/main)
 
