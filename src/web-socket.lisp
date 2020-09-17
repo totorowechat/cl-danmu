@@ -32,8 +32,11 @@
      (intbytes:octets->int32  (subseq bytes start (+ 4 start)))
      nil))
 
-(defun read-msg (bytes start length)
-  (trivial-utf-8:utf-8-bytes-to-string bytes :start start :end (- (+ start length) 9)))
+(defun read-msg (bytes start len)
+  (if (>= (length bytes)
+	 len)
+      (trivial-utf-8:utf-8-bytes-to-string bytes :start start :end (- (+ start len) 9))
+      "error"))
 
 ;; (defun read-dy-bytes (bytes)
 ;;   (if (= 0 (length bytes))
@@ -48,6 +51,7 @@
 		 lst
 		 (progn
 		   ;; here print the msg
+		   ;; (print bytes)
 		   (let ((r-bytes-length (read-bytes-len bytes 0)))
 		     (analysis-msg  (read-msg bytes 12 r-bytes-length))
 		     (if (<= (+ 4 r-bytes-length)

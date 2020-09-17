@@ -25,7 +25,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;
 ;;
-;; little byte to int
+;; read first type message
 
 
 
