@@ -8,7 +8,8 @@
    :ws-client)
   (:export
    :main
-   :run))
+   :run
+   :url))
 (in-package :danmu)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -69,19 +70,24 @@
     (-<>> (get-url ct md5 rid)
 	  (nth-value 0) 
           (byte-to-str)
-	  (cl-ppcre:split "_.*m3u8")
+	  (cl-ppcre:split "_?\\.m3u8")
 	  (car)
-	  (mkstr "http://tx2play1.douyucdn.cn/live/" <> ".flv?uuid="))))
+	  (mkstr "http://hdltctwk.douyucdn2.cn/live/" <> ".flv?uuid="))))
 
 (defun main ()
   (let* ((p (pathname "./douyu.json"))
 	 (rlst (->> (get-roomlist p)
 		    (mapcar #'mkstr))))
     (pairlis (mapcar #'get-streamer rlst) (mapcar #'build-url rlst))))
-(let ((p (pathname "~/common-lisp/cl-danmu/douyu.json")))
-  (get-roomlist p))
+
+;; (let ((p (pathname "~/common-lisp/cl-danmu/douyu.json")))
+;;   (get-roomlist p))
+
 (defun run (roomid)
   (new (make-instance 'ws-client :roomid roomid)))
+
+(defun url (roomid)
+  (mkstr "mpv '" (build-url (mkstr roomid)) "'"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
