@@ -59,7 +59,13 @@
 			 (helper (subseq bytes (+ 4 r-bytes-length))
 				 (list lst (read-msg bytes 12 r-bytes-length)))
 			 (helper #() '())))))))
-    (helper bytes '())))
+    ;; (handle-case (helper bytes '())
+    ;; 		 (t (c)
+    ;; 		    (format t "Got an exception: ~a~%") c))
+
+    (ignore-errors (helper bytes '()))
+    ;; (helper bytes '())
+    ))
 
 ;; (defmethod new ((wsc ws-client))
 ;;   (wsd:start-connection (client wsc))
@@ -155,9 +161,15 @@
 	  (deserialize message))
     (list txt name level)))
 
+(defun print-msg (message)
+  (destructuring-bind
+      (msg name level)
+      message
+    (format t "~a - [~a](~a)~%" msg name level)))
+
 (defun analysis-msg (message)
   (let ((msg-type (cadar (deserialize message))))
-    (cond ((string= "chatmsg" msg-type) (print (msg-chatmsg message)))
+    (cond ((string= "chatmsg" msg-type) (print-msg (msg-chatmsg message)))
 	  (t nil)
 	  )))
 	  
